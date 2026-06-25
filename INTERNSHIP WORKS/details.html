@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KD* Store - Product Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="logo">🛒 KD<span>*</span> Store</div>
+            <div class="search-box">
+                <input type="text" placeholder="Search products...">
+                <button id="searchBtn">🔍 Search</button>
+            </div>
+            <div class="cart-icon" onclick="location.href='cart.html'">
+                🛒 Cart <span class="cart-badge cart-count">0</span>
+            </div>
+        </div>
+        <nav class="nav-bar">
+            <a href="index.html">🏠 Home</a>
+            <a href="products.html">🛍️ Shop Now</a>
+            <a href="details.html" class="active">📦 Product Info</a>
+            <a href="cart.html">🛒 My Cart</a>
+        </nav>
+    </header>
+
+    <div style="padding:10px 5%; font-size:13px; color:#888;">
+        <a href="index.html" style="color:#1565c0; text-decoration:none;">Home</a> &rsaquo;
+        <a href="products.html" style="color:#1565c0; text-decoration:none;">Products</a> &rsaquo;
+        <span>Wireless Headphone</span>
+    </div>
+
+    <div class="detail-box">
+        <div class="detail-img">🎧</div>
+        <div class="detail-info">
+            <h1>Wireless Headphone (Premium)</h1>
+            <div class="rating" style="font-size:16px; margin:8px 0;">★★★★★ <span style="color:#888; font-size:13px;">(128 Reviews)</span></div>
+            <div class="price">$99.00 <span class="old-price" style="font-size:16px;">$129.00</span></div>
+            <span class="stock-badge">✅ In Stock</span>
+            <p>Premium wireless headphone with 40-hour battery life and active noise cancellation. Perfect for music lovers and professionals.</p>
+
+            <div class="color-select-row">
+                <label>🎨 Choose Color:</label>
+                <select id="colorSelect">
+                    <option>Black</option>
+                    <option>Silver</option>
+                    <option>White</option>
+                </select>
+            </div>
+
+            <div class="qty-row">
+                <label>📦 Quantity:</label>
+                <button id="qtyMinus" style="padding:6px 12px; background:#e0e0e0; border:1px solid #ccc; border-radius:4px; cursor:pointer; font-size:16px;">−</button>
+                <input type="number" id="qtyInput" value="1" min="1" max="10">
+                <button id="qtyPlus" style="padding:6px 12px; background:#e0e0e0; border:1px solid #ccc; border-radius:4px; cursor:pointer; font-size:16px;">+</button>
+            </div>
+
+            <div class="detail-btns">
+                <button class="btn" id="cartBtn">🛒 Add to Cart</button>
+                <button class="btn btn-blue" id="buyNowBtn">⚡ Buy Now</button>
+                <button class="btn" id="wishlistDetailBtn" style="background:#fff; color:#1565c0; border:2px solid #1565c0;">🤍 Wishlist</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reviews-box">
+        <h3>💬 Customer Reviews</h3>
+        <div class="review-item">
+            <div class="reviewer">Ali R.</div>
+            <div class="review-rating">★★★★★</div>
+            <p>Nice product, working perfectly! Sound quality is amazing.</p>
+        </div>
+        <div class="review-item">
+            <div class="reviewer">Sara M.</div>
+            <div class="review-rating">★★★★☆</div>
+            <p>Fast delivery and good sound quality. Highly recommended!</p>
+        </div>
+        <div class="review-item">
+            <div class="reviewer">Usman K.</div>
+            <div class="review-rating">★★★★★</div>
+            <p>Battery life is excellent. Best headphone I ever bought.</p>
+        </div>
+
+        <div style="margin-top:20px; border-top:2px solid #e3f0ff; padding-top:16px;">
+            <h4 style="font-size:15px; margin-bottom:12px; color:#1565c0;">✏️ Write a Review</h4>
+            <div style="margin-bottom:10px;">
+                <input type="text" id="reviewName" placeholder="Your Name"
+                    style="padding:8px 12px; border:1px solid #ccc; border-radius:4px; width:220px; font-size:14px;">
+            </div>
+            <div style="margin-bottom:10px;">
+                <select id="reviewRating" style="padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;">
+                    <option value="5">★★★★★ (5 Stars)</option>
+                    <option value="4">★★★★☆ (4 Stars)</option>
+                    <option value="3">★★★☆☆ (3 Stars)</option>
+                    <option value="2">★★☆☆☆ (2 Stars)</option>
+                    <option value="1">★☆☆☆☆ (1 Star)</option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px;">
+                <textarea id="reviewText" placeholder="Share your experience..."
+                    style="padding:8px 12px; border:1px solid #ccc; border-radius:4px; width:100%; max-width:500px; height:80px; font-size:14px; resize:vertical;"></textarea>
+            </div>
+            <button class="btn btn-sm" id="submitReviewBtn">📤 Submit Review</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <span>KD* Store</span>. Created by <span>Muhammad Usman Farooqi</span></p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+    <script src="script.js"></script>
+    <script>
+        const buyNowBtn = document.getElementById('buyNowBtn');
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener('click', function () {
+                const color = document.getElementById('colorSelect').value;
+                const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+                // Add to cart then go to cart page
+                const cart = JSON.parse(localStorage.getItem('kdstore_cart') || '[]');
+                const existing = cart.find(i => i.name === 'Wireless Headphone' && i.color === color);
+                if (existing) { existing.qty += qty; } 
+                else { cart.push({ name: 'Wireless Headphone', color, price: 99, qty }); }
+                localStorage.setItem('kdstore_cart', JSON.stringify(cart));
+                location.href = 'cart.html';
+            });
+        }
+
+        const wishlistDetailBtn = document.getElementById('wishlistDetailBtn');
+        if (wishlistDetailBtn) {
+            wishlistDetailBtn.addEventListener('click', function () {
+                this.textContent = '❤️ Wishlisted';
+                this.style.background = '#fff0f0';
+                showToast('❤️ Wireless Headphone added to Wishlist!');
+            });
+        }
+
+        const submitReviewBtn = document.getElementById('submitReviewBtn');
+        if (submitReviewBtn) {
+            submitReviewBtn.addEventListener('click', function () {
+                const name = document.getElementById('reviewName').value.trim();
+                const rating = document.getElementById('reviewRating').value;
+                const text = document.getElementById('reviewText').value.trim();
+                if (!name || !text) { showToast('⚠️ Please fill in your name and review!'); return; }
+                const stars = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
+                const newReview = document.createElement('div');
+                newReview.className = 'review-item';
+                newReview.innerHTML = `
+                    <div class="reviewer">${name}</div>
+                    <div class="review-rating">${stars}</div>
+                    <p>${text}</p>`;
+                submitReviewBtn.parentElement.before(newReview);
+                document.getElementById('reviewName').value = '';
+                document.getElementById('reviewText').value = '';
+                showToast('✅ Review submitted! Thank you, ' + name + '!');
+            });
+        }
+    </script>
+</body>
+</html>
