@@ -35,7 +35,7 @@ import { ChatPage } from './pages/chat/ChatPage';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/internship-DHC-Work">
         <Routes>
           {/* Authentication Routes */}
           <Route path="/login" element={<LoginPage />} />
