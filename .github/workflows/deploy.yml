@@ -22,6 +22,8 @@ jobs:
         working-directory: nexus-platform
       - run: npm run build
         working-directory: nexus-platform
+      - run: cp dist/index.html dist/404.html
+        working-directory: nexus-platform
       - uses: actions/upload-pages-artifact@v3
         with:
           path: nexus-platform/dist
